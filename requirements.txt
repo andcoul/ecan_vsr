@@ -1,0 +1,17 @@
+pytorch
+opencv-python
+numpy
+pandas
+matplotlib
+dvc
+mlflow==2.2.2
+notebook
+pyYAML
+tqdm
+Flask
+Flask-Cors
+Django
+gdown
+-e .
+
+
