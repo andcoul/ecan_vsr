@@ -6,7 +6,10 @@ import torch.backends.cudnn as cudnn
 from dataset import *
 from evaluation import psnr
 from loss import *
-from src.ecan.model.model import Net as ECAN
+from ecan.components.model import Net as ECAN
+from ecan.utils import common
+from ecan.constants import CONFIG_FILE_PATH
+
 
 # Training parameters
 parser = argparse.ArgumentParser(description='ECAN Super-Resolution Settings')
@@ -14,31 +17,12 @@ parser.add_argument("--save", default='../logs/Settings/nFr7_batch64_K20L5M10_ec
                     help="Save path")
 parser.add_argument("--resume", default="", type=str,
                     help="Resume path (default: none)")
-parser.add_argument("--scale_factor", type=int, default=4, help="scale")
 parser.add_argument("--train_dataset_dir",
                     default='../data/vimeo', type=str, help="train_dataset")
-parser.add_argument("--inType", type=str, default='y',
-                    help="RGB input or y input")
-parser.add_argument("--batchSize", type=int, default=64,
-                    help="Training batch size")
-parser.add_argument("--nFrames", type=int, default=7,
-                    help="Number of input frame to train for")
-parser.add_argument("--nEpochs", type=int, default=200,
-                    help="Number of epochs to train for")
 parser.add_argument("--gpu", default=0, type=int, help="gpu ids (default: 0)")
-parser.add_argument('--seed', type=int, default=1,
-                    help='random seed to use. Default=0')
-parser.add_argument("--lr", type=float, default=4e-4,
-                    help="Learning Rate. Default=4e-4")
-parser.add_argument('--gamma', type=float, default=0.5, help='gamma')
-parser.add_argument('--t_max', type=int, default=200,
-                    help='Maximum number of iterations in CosineAnnealingLR, default=50')
-parser.add_argument("--step", type=int, default=6,
-                    help="Sets the learning rate to the initial LR decayed by momentum every n epochs, Default: n=6")
-parser.add_argument("--threads", type=int, default=16,
-                    help="Number of threads for data loader to use, Default: 1")
 
 opt = parser.parse_args()
+config = common.read_yaml(CONFIG_FILE_PATH)
 torch.cuda.set_device(opt.gpu)
 torch.manual_seed(opt.seed)
 VALID_PSNR_LIST = []

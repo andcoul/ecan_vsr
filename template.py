@@ -15,6 +15,8 @@ project_files = [
     f"src/{project_name}/utils/__init__.py",
     f"src/{project_name}/resources/__init__.py",
     f"src/{project_name}/constants/__init__.py",
+    f"src/{project_name}/entity/__init__.py",
+    f"src/{project_name}/entity/config_entity.py",
     "config/config.yaml",
     "dockerfile",
     "params.yaml",
@@ -22,7 +24,7 @@ project_files = [
     "requirements.txt",
     "template/index.py",
     "setup.py",
-    "researches/trials.ipynb",
+    "research/trials.ipynb",
 ]
 
 for file_path in project_files:
