@@ -24,6 +24,7 @@ project_files = [
     "requirements.txt",
     "template/index.py",
     "setup.py",
+    "main.py",
     "research/trials.ipynb",
 ]
 

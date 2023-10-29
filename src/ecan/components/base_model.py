@@ -1,9 +1,6 @@
-import torch
-import torch.nn as nn
-from networks import *
+from ecan.utils.networks_arch import *
 import torch.nn.functional as F
 import functools
-import time
 
 
 class Net(nn.Module):
@@ -57,26 +54,3 @@ class Net(nn.Module):
         for _ in range(num_of_layer):
             layers.append(block())
         return nn.Sequential(*layers)
-
-
-if __name__ == "__main__":
-    net = Net(4).cuda()
-    from thop import profile
-    from thop import clever_format
-    # from torchsummary import summary
-
-    input = torch.randn(1, 1, 7, 32, 32).cuda()
-    flops, params = profile(net, inputs=(input,))
-    flops, params = clever_format([flops, params], "%.3f")
-    print('   Params(M) ::: ', params)
-    print('   FLOPs(T) ::: ', flops)
-
-    # total_params = sum(p.numel() for p in net.parameters())
-    # print(f"[INFO]: {total_params:,} total parameters.")
-    # total_trainable_params = sum(
-    #     p.numel() for p in net.parameters() if p.requires_grad)
-    # print(f"[INFO]: {total_trainable_params:,} trainable parameters.")
-    # summary(net, (1, 7, 32, 32))
-    import torch
-
-    print(torch.__version__)

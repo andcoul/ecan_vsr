@@ -3,10 +3,10 @@ import gdown
 import zipfile
 from ecan import logger
 from ecan.entity.config_entity import DataIngestionConfig
-# from ecan.utils.common import get_size
+
 
 class DataIngestion:
-    def __int__(self, config: DataIngestionConfig):
+    def __init__(self, config: DataIngestionConfig):
         self.config = config
 
     def download_file(self) -> str:

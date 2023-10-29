@@ -1,26 +1,26 @@
 from ecan.config.configuration import ConfigurationManager
-from ecan.components.data_ingestion import DataIngestion
+from ecan.components.model_training import DataTraining
 from ecan import logger
 
-STAGE_NAME = "Data Ingestion Stage"
+STAGE_NAME = "Training Stage"
 
-class DataIngestionPipeline:
+
+class DataTrainingPipeline:
     def __init__(self):
         pass
 
     def main(self):
         config = ConfigurationManager()
-        data_ingestion_config = config.get_data_ingestion_config()
-        data_ingestion = DataIngestion(config=data_ingestion_config)
-        data_ingestion.download_file()
-        data_ingestion.extract_zip_file()
+        data_training_config = config.get_training_config()
+        data_training = DataTraining(config=data_training_config)
+        data_training.main()
 
 
 if __name__ == '__main__':
     try:
         logger.info(f"*******************")
         logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
-        obj = DataIngestionPipeline()
+        obj = DataTrainingPipeline()
         obj.main()
         logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
     except Exception as e:

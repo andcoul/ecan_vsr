@@ -1,8 +1,7 @@
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from dataset import *
-from ecan.components.model import Net as RCAN
-from evaluation import psnr2, ssim
+from ecan.components.base_model import Net as RCAN
+from ecan.utils.evaluation import psnr2, ssim
 import numpy as np
 import argparse
 import os
@@ -16,7 +15,7 @@ parser.add_argument("--dataset_dir", default='../data',
 parser.add_argument("--test_results_dir",
                     default='../results/Exp19_nFr7_batch64_k20_l5Res12_m10_ecan_lab_dpw3_no_att', type=str, help="test_results dir")
 parser.add_argument(
-    "--model", default='../logs/ecan/Exp19_nFr7_batch64_k20_l5Res12_m10_ecan_lab_dpw3_no_att/ecan.pth.tar', type=str,
+    "--model", default='../logs/ecan/Exp19_nFr7_batch64_k20_l5Res12_m10_ecan_lab_dpw3_no_att/base_model.pth.tar', type=str,
     help="checkpoint")
 parser.add_argument("--gpu", type=int, default=0, help="Test gpu")
 parser.add_argument("--datasets", type=str,
@@ -68,20 +67,20 @@ def main(dataset_name):
     PSNR_dataset = []
     SSIM_dataset = []
 
-    if dataset_name == 'vid4' or dataset_name == 'SPMC-11':
-        video_list = os.listdir(opt.test_dataset_dir + '/' + dataset_name)
-        for i in range(0, len(video_list)):
-            video_name = video_list[i]
-            test_set = TestSetLoader(opt.test_dataset_dir + '/' + dataset_name + '/' + video_name,
-                                     scale_factor=opt.scale_factor)
-            test_loader = DataLoader(
-                dataset=test_set, num_workers=1, batch_size=1, shuffle=False)
-            psnr, ssim = demo_test(
-                net, test_loader, opt.scale_factor, dataset_name, video_name)
-            PSNR_dataset.append(psnr)
-            SSIM_dataset.append(ssim)
-        logger.info(dataset_name + ' psnr: ' + str(float(np.array(PSNR_dataset).mean())) + '  ssim: ' + str(
-            float(np.array(SSIM_dataset).mean())))
+
+    video_list = os.listdir()
+    for i in range(0, len(video_list)):
+        video_name = video_list[i]
+        test_set = TestSetLoader(opt.test_dataset_dir + '/' + dataset_name + '/' + video_name,
+                                 scale_factor=opt.scale_factor)
+        test_loader = DataLoader(
+            dataset=test_set, num_workers=1, batch_size=1, shuffle=False)
+        psnr, ssim = demo_test(
+            net, test_loader, opt.scale_factor, dataset_name, video_name)
+        PSNR_dataset.append(psnr)
+        SSIM_dataset.append(ssim)
+    logger.info(dataset_name + ' psnr: ' + str(float(np.array(PSNR_dataset).mean())) + '  ssim: ' + str(
+        float(np.array(SSIM_dataset).mean())))
 
 if __name__ == '__main__':
     for i in range(len(opt.datasets)):
